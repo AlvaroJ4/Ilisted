@@ -37,5 +37,7 @@ export default function Menu() {
 }
 
 const estilo = StyleSheet.create({
-
+    menu: {
+      backgroundColor: '#000000'
+    }
 })
