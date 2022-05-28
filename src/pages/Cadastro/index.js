@@ -2,26 +2,25 @@
 import React, { useState} from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, ScrollView} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { auth } from '../../config/firebase';
+import firebase from 'firebase/compat';
 
 
 import  * as Animatable from "react-native-animatable";
 
 export default function Cadastro () {
 
-    const [hidePass, setHidePass] = useState(true);
+    const [nome, setNome] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     
-    const handleSignUp = () => {
-        auth
-          .createUserWithEmailAndPassword(email, password)
-          .then(userCredentials => {
-            const user = userCredentials.user;
-            console.log('Registrado com:', user.email);
-          })
-          .catch(error => alert(error.message))
-      }
+    async function Cadastrar() {
+        await firebase.auth().createUserWithEmailAndPassword(email, password).
+        then((value)  => {
+            firebase.database().ref('user').child(value.user.uid).set({
+                nome: nome
+            })
+        })
+    }
      
     
     return (
@@ -33,33 +32,24 @@ export default function Cadastro () {
 
                 <Animatable.View animation="fadeInUp" style={estilos.containerForm}>
                     <Text style={estilos.titulo}>Nome Completo</Text>
-                    <TextInput placeholder="Digite seu nome" style={estilos.input}/>
+                    <TextInput placeholder="Digite seu nome" style={estilos.input} value={nome} onChangeText={(nome) => setNome(nome)}/>
 
                     <Text style={estilos.titulo}>Usuário</Text>
                     <TextInput placeholder="Digite o nome de usuário" style={estilos.input}/>
 
                     <Text style={estilos.titulo}>Email</Text>
                     <TextInput placeholder="Digite seu email" value={email} style={estilos.input}  
-                    onChangeText={text => setEmail(text)}/>
+                    onChangeText={(email) => setEmail(email)}/>
                     
                     
                     <Text style={estilos.titulo}>Senha</Text>
-                    <TouchableOpacity style={estilos.icon} onPress={ () => setHidePass(!hidePass) }>
-                        { hidePass ?
-                            <Ionicons name='eye' color={'#000000'} size={23}/>
-                            :
-                            <Ionicons name='eye-off' color={'#000000'} size={23}/>
-                        }
-
-                        
-                    </TouchableOpacity>
+                    
                    <TextInput placeholder="Digite uma senha" 
-                        onChangeText={text => setPassword(text)} value={password}
-                        secureTextEntry={hidePass}
+                        onChangeText={(password) => setPassword(password)} value={password}
                         style={estilos.input}
                     />
 
-                    <TouchableOpacity style={estilos.butao} onPress={ handleSignUp }>
+                    <TouchableOpacity style={estilos.butao} onPress={ Cadastrar }>
                         <Text style={estilos.textoButao}  >Cadastrar</Text>
                     </TouchableOpacity>
 
