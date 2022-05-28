@@ -26,15 +26,6 @@ export default function Entrada({}) {
         return unsubscribe
     }, [])
     
-    const handleSignUp = () => {
-        auth
-          .createUserWithEmailAndPassword(email, password)
-          .then(userCredentials => {
-            const user = userCredentials.user;
-            console.log(user.email);
-          })
-          .catch(error => alert(error.message))
-      }
 
     
     const handleLogin = () => {
@@ -76,7 +67,7 @@ export default function Entrada({}) {
                     <Text style={estilos.butaoTexto}>Acessar</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={ handleSignUp } style={estilos.butao}>
+                <TouchableOpacity onPress={ () => navigation.navigate('Cadastro') } style={estilos.butao}>
                     <Text style={estilos.registroTexto}>Não possui uma conta? Cadastre-se já!</Text> 
                 </TouchableOpacity>          
             </Animatable.View>
