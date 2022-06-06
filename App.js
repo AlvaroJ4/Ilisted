@@ -6,6 +6,7 @@ import 'react-native-gesture-handler';
 import Routes from './src/routes/index.js';
 
 
+
 export default function App() {
   return (
     <NavigationContainer  >

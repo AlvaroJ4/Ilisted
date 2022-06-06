@@ -1,7 +1,7 @@
 
 import React, { useState} from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, ScrollView} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+
 import firebase from 'firebase/compat';
 
 
@@ -9,20 +9,20 @@ import  * as Animatable from "react-native-animatable";
 
 export default function Cadastro () {
 
-    const [nome, setNome] = useState('')
+    
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     
-    async function Cadastrar() {
-        await firebase.auth().createUserWithEmailAndPassword(email, password).
-        then((value)  => {
-            firebase.database().ref('user').child(value.user.uid).set({
-                nome: nome
-            })
+    const handleSignUp = () => {
+        auth
+        .createUserWithEmailAndPassword(email, password)
+        .then(userCredentials => {
+            const user = userCredentials.user;
+            console.log('Cadastrado com:',user.email);
         })
+        .catch(error => alert(error.message))
     }
      
-    
     return (
         <ScrollView>
             <View style={estilos.container}>
@@ -49,7 +49,7 @@ export default function Cadastro () {
                         style={estilos.input}
                     />
 
-                    <TouchableOpacity style={estilos.butao} onPress={ Cadastrar }>
+                    <TouchableOpacity style={estilos.butao} onPress={ handleSignUp }>
                         <Text style={estilos.textoButao}  >Cadastrar</Text>
                     </TouchableOpacity>
 

@@ -8,27 +8,25 @@ import { auth } from '../../config/firebase';
 import { useNavigation } from "@react-navigation/native";
 
 
-export default function Entrada({}) {
-
-    const [email, setEmail] = useState('')
+export default function Entrada() {
     const [hidePass, setHidePass] = useState(true);
-    const [password, setPassword] = useState('')
-
     const navigation = useNavigation()
+    
+     
+    const[email,setEmail] = useState('');
+    const[password,setPassword] = useState('');
 
     useEffect(() => {
-      const unsubscribe = auth.onAuthStateChanged(user => {
-            if (user) {
-                navigation.navigate("Principal")
-            }
-        })
+        const unsubscribe = auth.onAuthStateChanged(user => {
+              if (user) {
+                  navigation.navigate("Principal")
+              }
+          })
+  
+          return unsubscribe
+      }, [])
 
-        return unsubscribe
-    }, [])
-    
-
-    
-    const handleLogin = () => {
+      const handleLogin = () => {
         auth
         .signInWithEmailAndPassword(email, password)
         .then(userCredentials => {
@@ -50,7 +48,7 @@ export default function Entrada({}) {
                   />
                 <Text style={estilos.titulo}>Email</Text>
                 <TextInput placeholder="Digite seu email" value={email} style={estilos.input} 
-                onChangeText={text => setEmail(text)}  />
+                onChangeText={ (text) => setEmail(text) }/>
 
                 <Text style={estilos.titulo}>Senha</Text>
                 <TouchableOpacity style={estilos.icon} onPress={ () => setHidePass(!hidePass) }>
@@ -61,7 +59,7 @@ export default function Entrada({}) {
                         }
                     </TouchableOpacity>
                 <TextInput placeholder="Digite sua senha" secureTextEntry={hidePass} value={password}
-                onChangeText={text => setPassword(text)} style={estilos.input}/>
+                onChangeText={(text) => setPassword(text)} style={estilos.input}/>
                     
                 <TouchableOpacity onPress={ handleLogin } style={estilos.butao}>
                     <Text style={estilos.butaoTexto}>Acessar</Text>
@@ -73,7 +71,6 @@ export default function Entrada({}) {
             </Animatable.View>
 
         </ScrollView>
-
     );
 }
 

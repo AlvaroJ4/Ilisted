@@ -4,7 +4,15 @@ import 'react-native-gesture-handler';
 import  BemVindo from "../pages/BemVindo";
 import Entrada from "../pages/Entrar";
 import Cadastro from "../pages/Cadastro";
-import Menu from "../pages/Principal";
+import Principal from "../pages/Principal";
+
+import HomeScreen from "../pages/Principal/Home";
+
+import Task from "../pages/Principal/Lista";
+import TaskList from "../pages/Principal/TaskList";
+import Listas from "../pages/Principal/Lista";
+
+
 
 const Stack = createNativeStackNavigator();
 
@@ -28,7 +36,22 @@ export default function Routes() {
             />
             <Stack.Screen 
             name="Principal"
-            component={Menu}
+            component={Principal}
+            options={{ headerShown: false }}
+            />
+            <Stack.Screen 
+            name="Tasks"
+            component={Listas}
+            options={{ headerShown: false }}
+            />
+            <Stack.Screen 
+            name="Home"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+            />
+            <Stack.Screen 
+            name="Tasks2"
+            component={TaskList}
             options={{ headerShown: false }}
             />
         </Stack.Navigator>
