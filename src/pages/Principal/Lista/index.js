@@ -12,19 +12,22 @@ import {
 
 import firebase from 'firebase/compat';
 
-import { getAuth } from "firebase/auth";
+
 import Feather from 'react-native-vector-icons/Feather'
 import TaskList from '../TaskList';
+
 import { auth } from '../../../config/firebase';
 
 
 
 export default function Lista() {
- 
-  const auth = getAuth();
+  
+  const userId = auth.currentUser.uid
 
-  const userId = auth.currentUser.uid;
+  const inputRef = useRef(null);
   const [tasks, setTasks] = useState([]);
+
+  const [key,setKey] = useState('');
   const [newTask, setNewTask] = useState('');
   
   useEffect(() => {
@@ -46,7 +49,6 @@ export default function Lista() {
           setTasks(oldTasks => [...oldTasks, data])
         })
 
-
       })
 
     }
@@ -58,7 +60,32 @@ export default function Lista() {
     if (newTask === '') {
       return;
     }
-    let tarefas =firebase.database().ref('tarefas')
+
+    // O usuario pode editar aqui
+    if(key !== ''){
+      firebase.database().ref('tarefas').child(userId).child(key).update({
+        nome: newTask
+      })
+      .then(()=> {
+        const taskIndex = tasks.findIndex( (item) => item.key === key)
+        const taskClone = tasks;
+        taskClone[taskIndex].nome = newTask
+
+        setTasks([...taskClone])
+
+
+      })
+
+      Keyboard.dismiss();
+      setNewTask('');
+      setKey('');
+      return;
+    }
+    // Acaba aqui a edição de tarefa
+
+
+    // Adicionar nova tarefa na lista
+    let tarefas =firebase.database().ref('tarefas').child(userId)
     let chave = tarefas.push().key
 
     tarefas.child(chave).set({
@@ -78,24 +105,45 @@ export default function Lista() {
     setNewTask('');
   }
   
-
+// função deletar
   function handleDelete(key) {
-    console.log(key);
+    firebase.database().ref('tarefas').child(userId).child(key).remove()
+    .then(() => {
+      const findTask = tasks.filter( item => item.key !== key)
+      setTasks(findTask)
+    })
+  }
+// fim da função deletar
+
+
+
+  function handleEdit(data){
+    setKey(data.key)
+    setNewTask(data.nome)
+    inputRef.current.focus();
   }
 
+  function cancelEdit() {
+    setKey('');
+    setNewTask('');
+    Keyboard.dismiss();
+  }
   
   return (
     <SafeAreaView style={styles.container}>
  
-       <View style={{ flexDirection: 'row', marginBottom: 8, }}>
-         <TouchableOpacity >
-           <Feather name="x-circle" size={20} color="#FF0000"/>
-         </TouchableOpacity>
-         <Text style={{ marginLeft: 5, color: '#FF0000' }}>
-           Você está editando uma tarefa!
-         </Text>
+       { key .length > 0 && (
+
+         <View style={{ flexDirection: 'row', marginBottom: 8, alignItems: 'center', justifyContent:'center'}}>
+          <TouchableOpacity onPress={cancelEdit} >
+            <Feather name="x-circle" size={20} color="#FF0000"/>
+          </TouchableOpacity>
+          <Text style={{ marginLeft: 5, color: '#FF0000' }}>
+            Você está editando uma tarefa!
+          </Text>
        </View>
 
+       )}
      
      <View style={styles.containerTask}>
        <TextInput
@@ -103,7 +151,7 @@ export default function Lista() {
          placeholder="O que vai fazer hoje?"
          value={newTask}
          onChangeText={ (text) =>  setNewTask(text) }
-         
+         ref={inputRef}
        />
        <TouchableOpacity style={styles.buttonAdd} onPress={handleAdd}>
          <Text style={styles.buttonText}>+</Text>
@@ -115,7 +163,7 @@ export default function Lista() {
        data={tasks}
        keyExtractor={ item => item.key }
        renderItem={ ({ item }) => (
-         <TaskList data={item} deleteItem={handleDelete}  />
+         <TaskList data={item} deleteItem={handleDelete} editItem={handleEdit} />
        )}
      />
  
