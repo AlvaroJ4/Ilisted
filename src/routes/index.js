@@ -5,13 +5,7 @@ import  BemVindo from "../pages/BemVindo";
 import Entrada from "../pages/Entrar";
 import Cadastro from "../pages/Cadastro";
 import Principal from "../pages/Principal";
-
-import HomeScreen from "../pages/Principal/Home";
-
-import Task from "../pages/Principal/Lista";
-import TaskList from "../pages/Principal/TaskList";
-import Listas from "../pages/Principal/Lista";
-
+import Lista from "../pages/Principal/Lista";
 
 
 const Stack = createNativeStackNavigator();
@@ -40,18 +34,8 @@ export default function Routes() {
             options={{ headerShown: false }}
             />
             <Stack.Screen 
-            name="Tasks"
-            component={Listas}
-            options={{ headerShown: false }}
-            />
-            <Stack.Screen 
-            name="Home"
-            component={HomeScreen}
-            options={{ headerShown: false }}
-            />
-            <Stack.Screen 
-            name="Tasks2"
-            component={TaskList}
+            name="Lista"
+            component={Lista}
             options={{ headerShown: false }}
             />
         </Stack.Navigator>
