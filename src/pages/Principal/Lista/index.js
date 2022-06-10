@@ -18,8 +18,6 @@ import TaskList from '../TaskList';
 
 import { auth } from '../../../config/firebase';
 
-
-
 export default function Lista() {
   
   const userId = auth.currentUser.uid
@@ -134,12 +132,12 @@ export default function Lista() {
  
        { key .length > 0 && (
 
-         <View style={{ flexDirection: 'row', marginBottom: 8, alignItems: 'center', justifyContent:'center'}}>
+         <View style={{ flexDirection: 'row', marginBottom: 19,alignItems: 'center', justifyContent:'center'}}>
           <TouchableOpacity onPress={cancelEdit} >
             <Feather name="x-circle" size={20} color="#FF0000"/>
           </TouchableOpacity>
           <Text style={{ marginLeft: 5, color: '#FF0000' }}>
-            Você está editando uma tarefa!
+            Basta clicar no 'x' para cancelar tarefa!
           </Text>
        </View>
 
@@ -166,7 +164,6 @@ export default function Lista() {
          <TaskList data={item} deleteItem={handleDelete} editItem={handleEdit} />
        )}
      />
- 
     </SafeAreaView>
    );
  }
@@ -176,7 +173,7 @@ export default function Lista() {
      flex:1,
      paddingTop: 25,
      paddingHorizontal: 10,
-     backgroundColor: '#F2f6fc'
+     backgroundColor: '#ffffff'
    },
    containerTask:{
      flexDirection: 'row'
