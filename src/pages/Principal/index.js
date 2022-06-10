@@ -43,7 +43,7 @@ const Principal = () => {
             />
          ),
         }}/>
-        <Drawer.Screen name='Prerfil' component={Perfil} options={{
+        <Drawer.Screen name='Perfil' component={Perfil} options={{
           drawerIcon: ({size}) => (
             <AntDesign
                name="user"
@@ -61,7 +61,7 @@ const Principal = () => {
             />
          ),
         }}/>
-        <Drawer.Screen name='Configurções' component={Configuracao} options={{
+        <Drawer.Screen name='Configurações' component={Configuracao} options={{
           drawerIcon: ({size}) => (
             <AntDesign
                name="setting"
