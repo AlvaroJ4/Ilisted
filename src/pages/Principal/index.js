@@ -1,48 +1,90 @@
 import React from 'react';
-import { View,StyleSheet, } from 'react-native';
+import { View,StyleSheet, TouchableOpacity, Text, Settings } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-
-import { Ionicons } from '@expo/vector-icons'; 
-import { FontAwesome5 } from '@expo/vector-icons';
-
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 
 import HomeScreen from './Home';
-import { auth } from '../../config/firebase';
-import CustomDrawer from '../../components/CustomDrawer';;
 import Listas from './Lista';
+import Perfil from './Profile';
+import Configuracao from './Configuracao';
+import Sair from './Exit';
+
+import { auth } from '../../config/firebase';
+
+import { AntDesign } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons'; 
+
 
 
 const Drawer = createDrawerNavigator();
 
 
-export default function Menu() {
-    
-    const navigation = useNavigation()
+const Principal = () => {
+
+  const navigation = useNavigation() 
 
     const handleSignOut = () => {
-      auth
-      .signOut()
-      .then(() => {
-        navigation.replace("Entrada")
-      })
-      .catch(error => alert(error.message))
+        auth
+        .signOut()
+        .then(() => {
+            navigation.replace("Entrar")
+        })
     }
-
+  
   return (
-
     <NavigationContainer independent={true} >
       <Drawer.Navigator >
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Sua Lista" component={Listas} />
-        
+        <Drawer.Screen  name='Home' component={HomeScreen} options={{
+          drawerIcon: ({size}) => (
+            <Ionicons
+               name="ios-home"
+               size={size}
+               color='black'
+            />
+         ),
+        }}/>
+        <Drawer.Screen name='Prerfil' component={Perfil} options={{
+          drawerIcon: ({size}) => (
+            <AntDesign
+               name="user"
+               size={size}
+               color='black'
+            />
+         ),
+        }}/>
+        <Drawer.Screen name='Sua Lista' component={Listas} options={{
+          drawerIcon: ({size}) => (
+            <Ionicons
+               name="ios-list"
+               size={size}
+               color='black'
+            />
+         ),
+        }}/>
+        <Drawer.Screen name='Configurções' component={Configuracao} options={{
+          drawerIcon: ({size}) => (
+            <AntDesign
+               name="setting"
+               size={size}
+               color='black'
+            />
+         ),
+        }}/>
+        <Drawer.Screen name='Exit' component={Sair} options={{
+          drawerIcon: ({size}) => (
+            <Ionicons
+               name="ios-exit-outline"
+               size={size}
+               color='black'
+               onPress={handleSignOut}  // professor aqui eu so consegui fazer a função de deslogar no ícone e nao no texto em si,
+                                        // entao para deslogar basta clicar no icone de exit que ele desloga e volta pra tela inicial
+            />
+         ),
+        }}/>
       </Drawer.Navigator>
     </NavigationContainer>
-
-  );
+  )
 }
 
+export default Principal;
 
-const estilo = StyleSheet.create({
-  
-});
