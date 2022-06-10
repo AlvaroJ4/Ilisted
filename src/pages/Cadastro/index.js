@@ -1,9 +1,7 @@
 
 import React, { useState} from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, ScrollView} from "react-native";
-
-import firebase from 'firebase/compat';
-
+import { auth } from '../../config/firebase'
 
 import  * as Animatable from "react-native-animatable";
 
@@ -12,6 +10,7 @@ export default function Cadastro () {
     
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    
     
     const handleSignUp = () => {
         auth
@@ -32,7 +31,7 @@ export default function Cadastro () {
 
                 <Animatable.View animation="fadeInUp" style={estilos.containerForm}>
                     <Text style={estilos.titulo}>Nome Completo</Text>
-                    <TextInput placeholder="Digite seu nome" style={estilos.input} value={nome} onChangeText={(nome) => setNome(nome)}/>
+                    <TextInput placeholder="Digite seu nome" style={estilos.input} />
 
                     <Text style={estilos.titulo}>Usuário</Text>
                     <TextInput placeholder="Digite o nome de usuário" style={estilos.input}/>
